@@ -15,3 +15,5 @@ onlyoffice = pyonlyoffice.PyOnlyOffice(
     baseurl="https://mistereko.ru/",
 )
 ```
+
+OnlyOffice API - https://api.onlyoffice.com/
