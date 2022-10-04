@@ -1,0 +1,3 @@
+from .pyonlyoffice import (
+    PyOnlyOffice
+)
