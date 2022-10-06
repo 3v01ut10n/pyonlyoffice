@@ -173,6 +173,8 @@ class PyOnlyOffice:
         r = requests.put(f"{self.baseurl}/api/2.0/files/fileops/terminate", headers=self.auth)
         j = json.loads(r.text)
 
+        return j
+
     def get_the_file_information(self, file_id: int):
         """
         Returns the detailed information about a file with the ID specified in the request.
@@ -194,3 +196,21 @@ class PyOnlyOffice:
         :param file_id: File ID.
         """
         return self.get_the_file_information(file_id)["response"]["title"]
+
+    def update_file_content(self, file_id: int, filename):
+        """
+        Updates the content of a file with the ID specified in the request.
+
+        :param file_id: File ID.
+        :param filename: Filename.
+
+        https://api.onlyoffice.com/portals/method/files/put/api/2.0/files/%7bfileid%7d/update
+        """
+        r = requests.put(
+            f"{self.baseurl}/api/2.0/files/{file_id}/update",
+            headers=self.auth,
+            files={"file": open(filename, "rb")},
+        )
+        j = json.loads(r.text)
+
+        return j
