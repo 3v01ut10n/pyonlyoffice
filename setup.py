@@ -8,7 +8,7 @@ requirements = ["requests=2.28.1"]
 
 setup(
     name="pyonlyoffice",
-    version="0.0.1",
+    version="0.0.2",
     author="Mister Eko",
     author_email="arxonix7@gmail.com",
     description="Package for working with OnlyOffice.",

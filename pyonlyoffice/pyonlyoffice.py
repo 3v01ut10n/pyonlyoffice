@@ -36,19 +36,6 @@ class PyOnlyOffice:
         self.token = j["response"]["token"]
         self.auth = {"Authorization": self.token}
 
-    def download_file(self, file_id: int, filename: str):
-        # TODO: Get actual filename from server.
-        """
-        :param file_id: File ID.
-        :param filename: Filename with extension.
-        :return:
-        """
-        r = requests.get(
-            f"{self.baseurl}/Products/Files/HttpHandlers/filehandler.ashx?action=download&fileid={file_id}",
-            headers=self.auth,
-        )
-        open(filename, "wb").write(r.content)
-
     def get_fileops(self):
         """
         :return: A list of all the active operations.
@@ -99,6 +86,21 @@ class PyOnlyOffice:
             ok = True
 
         return ok
+
+    def download_file(self, file_id: int, filename=None):
+        """
+        :param file_id: File ID.
+        :param filename: Filename to save. By default, the file name is taken from the server.
+        """
+        r = requests.get(
+            f"{self.baseurl}/Products/Files/HttpHandlers/filehandler.ashx?action=download&fileid={file_id}",
+            headers=self.auth,
+        )
+
+        if filename:
+            open(filename, "wb").write(r.content)
+        else:
+            open(self.get_filename(file_id), "wb").write(r.content)
 
     def upload(self, folder_id: int, filename: str):
         """
@@ -170,3 +172,45 @@ class PyOnlyOffice:
         """
         r = requests.put(f"{self.baseurl}/api/2.0/files/fileops/terminate", headers=self.auth)
         j = json.loads(r.text)
+
+        return j
+
+    def get_the_file_information(self, file_id: int):
+        """
+        Returns the detailed information about a file with the ID specified in the request.
+
+        :param file_id: File ID.
+        :return:
+
+        https://api.onlyoffice.com/portals/method/files/get/api/2.0/files/file/%7bfileid%7d
+        """
+        r = requests.get(f"{self.baseurl}/api/2.0/files/file/{file_id}", headers=self.auth)
+        j = json.loads(r.text)
+
+        return j
+
+    def get_filename(self, file_id: int):
+        """
+        Return filename.
+
+        :param file_id: File ID.
+        """
+        return self.get_the_file_information(file_id)["response"]["title"]
+
+    def update_file_content(self, file_id: int, filename):
+        """
+        Updates the content of a file with the ID specified in the request.
+
+        :param file_id: File ID.
+        :param filename: Filename.
+
+        https://api.onlyoffice.com/portals/method/files/put/api/2.0/files/%7bfileid%7d/update
+        """
+        r = requests.put(
+            f"{self.baseurl}/api/2.0/files/{file_id}/update",
+            headers=self.auth,
+            files={"file": open(filename, "rb")},
+        )
+        j = json.loads(r.text)
+
+        return j
