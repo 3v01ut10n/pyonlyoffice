@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as readme_file:
     readme = readme_file.read()
 
-requirements = ["requests=2.28.1"]
+requirements = ["requests>=2.28.1,<2.29"]
 
 setup(
     name="pyonlyoffice",
