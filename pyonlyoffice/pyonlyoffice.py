@@ -21,7 +21,7 @@ class PyOnlyOffice:
         """
         :param username: User name or email.
         :param password: Password.
-        :param baseurl: Own OnlyOffice link (https://mistereko.ru/).
+        :param baseurl: Own OnlyOffice link (https://example.com/).
 
         https://api.onlyoffice.com/portals/method/authentication/post/api/2.0/authentication
         """
