@@ -12,7 +12,7 @@ import pyonlyoffice
 onlyoffice = pyonlyoffice.PyOnlyOffice(
     username="test@example.com",
     password="qwerty123",
-    baseurl="https://mistereko.ru/",
+    baseurl="https://example.com/",
 )
 ```
 
