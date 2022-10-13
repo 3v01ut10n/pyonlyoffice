@@ -1,3 +1,4 @@
+import os
 import time
 import json
 
@@ -87,7 +88,7 @@ class PyOnlyOffice:
 
         return ok
 
-    def download_file(self, file_id: int, filename=None):
+    def download_file(self, file_id: int, filename: str = None):
         """
         :param file_id: File ID.
         :param filename: Filename to save. By default, the file name is taken from the server.
@@ -97,10 +98,12 @@ class PyOnlyOffice:
             headers=self.auth,
         )
 
-        if filename:
-            open(filename, "wb").write(r.content)
-        else:
-            open(self.get_filename(file_id), "wb").write(r.content)
+        if filename is None:
+            filename = self.get_filename(file_id)
+        if os.path.isfile(filename):
+            os.remove(filename)
+        with open(filename, "wb") as file:
+            file.write(r.content)
 
     def upload(self, folder_id: int, filename: str):
         """
